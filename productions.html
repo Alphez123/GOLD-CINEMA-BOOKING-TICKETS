@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Productions | Goldmine</title>
+</head>
+<body>
+    <!-- Lists all productions where the date is in the future. -->
+    <!-- Includes a welcome message if logged in. -->
+    <!-- Shows table with production details for potential booking. -->
+
+    <h2>Available Productions</h2>
+    {% if session.get('first_name') %}
+        <p>Welcome, {{ session.first_name }}! <a href="{{ url_for('user_dashboard') }}">Dashboard</a> | <a href="{{ url_for('logout') }}">Logout</a></p>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Login</a> to book tickets Now.</p>
+    {% endif %}
+
+    {% if shows %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Production ID</th>
+                    <th>Production Name</th>
+                    <th>Production Type</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Total Tickets</th>
+                    <th>Tickets Sold</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for show in shows %}
+                    <tr>
+                        <td>{{ show.id }}</td>
+                        <td>{{ show.production_name }}</td>
+                        <td>{{ show.production_type }}</td>
+                        <td>{{ show.date }}</td>
+                        <td>{{ show.time }}</td>
+                        <td>{{ show.total_tickets }}</td>
+                        <td>{{ show.tickets_sold }}</td>
+                        <td>
+                            {% if session.get('role') == 'user' %}
+                                <form method="POST" action="{{ url_for('book_production', production_id=show.id) }}">
+                                    <input type="number" name="tickets" placeholder="Tickets" min="1" max="{{ show.total_tickets - show.tickets_sold }}" required>
+                                    <input type="submit" value="Book Ticket">
+                                </form>
+                            {% else %}
+                                <p>Login Now to book</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No upcoming productions available.</p>
+    {% endif %}
+
+</body>
+</html>

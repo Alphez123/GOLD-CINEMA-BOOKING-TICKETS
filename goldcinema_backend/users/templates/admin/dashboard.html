@@ -1,0 +1,63 @@
+{% extends "admin/admin_base.html" %}
+{% load static %}
+{% block content %}
+
+<h1>Dashboard Overview</h1>
+
+<div class="card-row">
+    <div class="card">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Bookings</h3>
+        <p>{{ total_bookings }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Revenue</h3>
+        <p>KSH {{ total_revenue }}</p>
+    </div>
+</div>
+
+<h2>Recent Bookings</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Movie</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Seats</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in recent_bookings %}
+        <tr>
+            <td>{{ b.user.email }}</td>
+            <td>{{ b.movie_name }}</td>
+            <td>{{ b.date }}</td>
+            <td>{{ b.time }}</td>
+            <td>{{ b.seats }}</td>
+            <td>{{ b.created_at }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No recent bookings.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Popular Movies</h2>
+<ul>
+    {% for m in popular_movies %}
+    <li>{{ m.movie_name }} ({{ m.count }})</li>
+    {% empty %}
+    <li>No data.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

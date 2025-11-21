@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Register - Gold Cinema</title>
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+    <canvas id="background"></canvas>
+
+    <div class="container">
+        <div class="login-box">
+            <a href="/html/index.html" class="back-link">← Back </a>
+            <h2>Create Your Account</h2>
+            {% if messages %}
+            {% for message in messages %}
+            <p style="color: green; font-weight:600;">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+
+            {% for field in form %}
+            {% for error in field.errors %}
+            <p style="color:red;">{{ error }}</p>
+            {% endfor %}
+            {% endfor %}
+
+            <form id="registerForm" method="POST">
+                {% csrf_token %}
+
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" required />
+
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" required />
+
+                <label for="city">City</label>
+                <input list="cityList" id="city" name="city" placeholder="e.g. Kisii" required />
+                <datalist id="cityList">
+                    <!-- keep all your city options here -->
+                    <option value="Nairobi">
+                    <option value="Mombasa">
+                    <option value="Kisii">
+                    <option value="Nakuru">
+                    <option value="Eldoret">
+                    <option value="Thika">
+                    <option value="Kericho">
+                    <option value="Nyeri">
+                    <option value="Machakos">
+                    <option value="Kakamega">
+                    <option value="Kwale">
+                    <option value="Malindi">
+                    <option value="Voi">
+                    <option value="Garissa">
+                    <option value="Wajir">
+                    <option value="Mandera">
+                    <option value="Marsabit">
+                    <option value="Isiolo">
+                    <option value="Meru">
+                    <option value="Embu">
+                    <option value="Kitui">
+                    <option value="Wote">
+                    <option value="Ol Kalou">
+                    <option value="Kerugoya">
+                    <option value="Murang'a">
+                    <option value="Kiambu">
+                    <option value="Lodwar">
+                    <option value="Kapenguria">
+                    <option value="Maralal">
+                    <option value="Kitale">
+                    <option value="Iten">
+                    <option value="Kapsabet">
+                    <option value="Kabarnet">
+                    <option value="Rumuruti">
+                    <option value="Narok">
+                    <option value="Kajiado">
+                    <option value="Bomet">
+                    <option value="Mbale">
+                    <option value="Bungoma">
+                    <option value="Busia">
+                    <option value="Siaya">
+                    <option value="Homa Bay">
+                    <option value="Migori">
+                    <option value="Nyamira">
+                    <option value="Hola">
+                    <option value="Lamu">
+                    <option value="Mwatate">
+                    <option value="Kathwana">
+                </datalist>
+
+                <label for="address">Physical Address</label>
+                <input type="text" id="address" name="address" placeholder="Enter your address" required />
+
+                <label for="zip_code">Zip Code</label>
+                <input type="text" id="zip_code" name="zip_code" placeholder="Enter your zip code" required />
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="e.g. alphez@gmail.com" required />
+
+                <label for="password1">Password</label>
+                <input type="password" id="password1" name="password1" placeholder="Enter password" required />
+
+                <label for="password2">Confirm Password</label>
+                <input type="password" id="password2" name="password2" placeholder="Re-enter password" required />
+
+                <p id="message" style="color: red;"></p>
+
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="e.g. 0712345678" pattern="[0-9]{10}" required />
+
+                <button type="submit">Register</button>
+
+                <p id="registerMsg" style="text-align:center; font-weight:600;"></p>
+
+                <span class="cta">
+                    Already have an account?
+                    <a href="{% url 'login' %}" style="text-decoration: underline;">Login</a>
+                </span>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ---------------------------------------------------
+            // 1. KEEP: Chat Widget Logic
+            // ---------------------------------------------------
+            const chatTab = document.getElementById('chatTab');
+            const chatWindow = document.getElementById('chatWindow');
+            const closeChatBtn = document.getElementById('closeChatBtn');
+            const chatBody = document.getElementById('chatBody');
+            const chatInput = document.getElementById('chatInput');
+            const chatSendBtn = document.getElementById('chatSendBtn');
+
+            // Toggle chat window visibility
+            const toggleChatWindow = () => {
+                chatWindow.classList.toggle('visible');
+                if (chatWindow.classList.contains('visible')) {
+                    chatInput.focus();
+                }
+            };
+
+            chatTab.addEventListener('click', toggleChatWindow);
+            closeChatBtn.addEventListener('click', toggleChatWindow);
+
+            // Chat message logic
+            const handleUserInput = () => {
+                const userText = chatInput.value.trim();
+                if (userText === '') return;
+
+                // (Add your message display code here)
+
+                chatInput.value = '';
+
+                setTimeout(() => {
+                    const botResponse = "Contact 0712345678 for more info.";
+                    // (Add bot response display code here)
+
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }, 500);
+            };
+
+            chatSendBtn.addEventListener('click', handleUserInput);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleUserInput();
+                }
+            });
+
+        });
+    </script>
+
+
+    <div class="chatbot-container">
+        <button id="chatTab" class="chat-tab-btn" title="Advisor Support">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+
+        <div id="chatWindow" class="chat-window">
+            <div class="chat-header">
+                <h3>Advisor Support</h3>
+                <button id="closeChatBtn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="chat-message bot-message">
+                    How may I help you?
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="chatInput" placeholder="Type a message..." />
+                <button id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

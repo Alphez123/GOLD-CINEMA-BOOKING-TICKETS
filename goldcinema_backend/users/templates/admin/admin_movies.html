@@ -1,0 +1,50 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+
+<h1>Movies</h1>
+
+<a href="{% url 'admin_movie_add' %}" class="btn-new">+ Add Movie</a>
+
+<form method="get" class="search-bar">
+    <input name="q" value="{{ q }}" placeholder="Search movies...">
+    <button>Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Poster</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Duration</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for m in movies %}
+        <tr>
+            <td>
+                {% if m.poster %}
+                <img src="{{ m.poster.url }}" style="height:60px;">
+                {% else %} No poster {% endif %}
+            </td>
+            <td>{{ m.title }}</td>
+            <td>{{ m.category }}</td>
+            <td>KSH {{ m.price }}</td>
+            <td>{{ m.duration }}</td>
+            <td>
+                <a href="{% url 'admin_movie_edit' m.id %}" class="btn-view">Edit</a>
+                <a href="{% url 'admin_movie_delete' m.id %}" class="btn-delete">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No movies found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

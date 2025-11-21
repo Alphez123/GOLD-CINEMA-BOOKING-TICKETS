@@ -1,0 +1,616 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie_name }} - Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-image:
+                linear-gradient(to right, rgba(15, 12, 41, 0.8), rgba(36, 36, 62, 0.8)),
+                url("/static/images/cinema.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            background: rgba(30, 30, 40, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+
+        .movie-poster {
+            flex: 1;
+            min-height: 400px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            flex: 1.5;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .movie-info h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .meta-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .movie-info p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(30, 30, 40, 0.8);
+            margin: auto;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 24px;
+            position: relative;
+            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Form Styles inside Modal */
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            color: #ffd700;
+            font-weight: 500;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 10px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Seat Map */
+        .seat-map {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .seat-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .seat {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+
+        .seat:hover:not(.unavailable) {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .seat.selected {
+            background: #ffd700;
+            color: #000;
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .seat.unavailable {
+            background: rgba(255, 77, 77, 0.2);
+            border-color: rgba(255, 77, 77, 0.4);
+            color: #ff4d4d;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="movie-poster">
+            {% if movie_poster %}
+            <img src="{{ movie_poster }}" alt="{{ movie_name }}">
+            {% else %}
+            <img src="{% static 'images/other-movies.jpg' %}" alt="{{ movie_name }}">
+            {% endif %}
+        </div>
+        <div class="movie-info">
+            <h1>{{ movie_name }}</h1>
+            <div class="meta-tags">
+                <span class="tag">{{ movie_genre|default:"Genre" }}</span>
+                <span class="tag">{{ movie_duration|default:"Duration" }}</span>
+            </div>
+            <p>{{ movie_description }}</p>
+
+            <div class="btn-group">
+                <button id="openBookingModal" class="btn btn-primary">Book Ticket</button>
+                <a href="{% url 'homepage' %}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Book Ticket</h2>
+            <form id="booking-form" method="POST" action="{% url 'create_booking' %}">
+                {% csrf_token %}
+                <input type="hidden" name="movie_name" value="{{ movie_name }}">
+
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="time">Time</label>
+                <select id="time" name="time" required>
+                    <option value="" disabled selected>Select Time</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="13:00">01:00 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="19:00">07:00 PM</option>
+                    <option value="22:00">10:00 PM</option>
+                </select>
+
+                <div class="seat-map">
+                    <label>Select Seats</label>
+                    <div class="seat-row">
+                        <div class="seat" data-seat="A1">A1</div>
+                        <div class="seat" data-seat="A2">A2</div>
+                        <div class="seat" data-seat="A3">A3</div>
+                        <div class="seat" data-seat="A4">A4</div>
+                    </div>
+                    <div class="seat-row">
+                        <div class="seat" data-seat="B1">B1</div>
+                        <div class="seat" data-seat="B2">B2</div>
+                        <div class="seat" data-seat="B3">B3</div>
+                        <div class="seat" data-seat="B4">B4</div>
+                    </div>
+                    <div class="seat-row">
+                        <div class="seat" data-seat="C1">C1</div>
+                        <div class="seat" data-seat="C2">C2</div>
+                        <div class="seat" data-seat="C3">C3</div>
+                        <div class="seat" data-seat="C4">C4</div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="selected_seats" name="selected_seats">
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Confirm
+                    Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 50px; color: #4caf50; margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 style="color: #4caf50;">Booking Confirmed!</h2>
+            <p id="successMessage" style="font-size: 1.1em; color: #e0e0e0; margin-bottom: 30px;"></p>
+            <button id="closeSuccessBtn" class="btn btn-primary" style="width: 100%;">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Insufficient Funds Modal -->
+    <div id="insufficientFundsModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 50px; color: #ff4d4d; margin-bottom: 20px;">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h2 style="color: #ff4d4d;">Insufficient Funds</h2>
+            <p id="insufficientFundsMessage" style="font-size: 1.1em; color: #e0e0e0; margin-bottom: 30px;"></p>
+            <button id="openDepositFromErrorBtn" class="btn btn-primary" style="width: 100%;">Deposit Funds</button>
+            <button id="closeInsufficientFundsBtn" class="btn btn-secondary"
+                style="width: 100%; margin-top: 10px;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div id="depositModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-btn" id="closeDepositModal">&times;</span>
+            <h2 style="color: #4caf50;">Deposit Funds</h2>
+            <form id="depositForm" method="POST" action="{% url 'deposit' %}">
+                {% csrf_token %}
+                <label for="amount" style="text-align: left; color: #ffd700;">Amount (KSH)</label>
+                <input type="number" id="amount" name="amount" min="1" required
+                    style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc;">
+                <button type="submit" class="btn btn-primary"
+                    style="width: 100%; background: #4caf50; border: none;">Deposit Now</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("bookingModal");
+        const btn = document.getElementById("openBookingModal");
+        const span = document.getElementsByClassName("close-btn")[0];
+        const successModal = document.getElementById("successModal");
+        const closeSuccessBtn = document.getElementById("closeSuccessBtn");
+
+        // Insufficient Funds Elements
+        const insufficientFundsModal = document.getElementById("insufficientFundsModal");
+        const openDepositFromErrorBtn = document.getElementById("openDepositFromErrorBtn");
+        const closeInsufficientFundsBtn = document.getElementById("closeInsufficientFundsBtn");
+
+        // Deposit Elements
+        const depositModal = document.getElementById("depositModal");
+        const closeDepositBtn = document.getElementById("closeDepositModal");
+
+        if (btn) {
+            btn.onclick = function () {
+                modal.style.display = "flex";
+            }
+        }
+
+        if (span) {
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+
+        if (closeSuccessBtn) {
+            closeSuccessBtn.onclick = function () {
+                successModal.style.display = "none";
+                window.location.href = "{% url 'homepage' %}";
+            }
+        }
+
+        // Insufficient Funds Logic
+        if (openDepositFromErrorBtn) {
+            openDepositFromErrorBtn.onclick = function () {
+                insufficientFundsModal.style.display = "none";
+                depositModal.style.display = "flex";
+            }
+        }
+
+        if (closeInsufficientFundsBtn) {
+            closeInsufficientFundsBtn.onclick = function () {
+                insufficientFundsModal.style.display = "none";
+            }
+        }
+
+        // Deposit Modal Logic
+        if (closeDepositBtn) {
+            closeDepositBtn.onclick = function () {
+                depositModal.style.display = "none";
+            }
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) modal.style.display = "none";
+            if (event.target == successModal) {
+                successModal.style.display = "none";
+                window.location.href = "{% url 'homepage' %}";
+            }
+            if (event.target == insufficientFundsModal) insufficientFundsModal.style.display = "none";
+            if (event.target == depositModal) depositModal.style.display = "none";
+        }
+
+        // Booking Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            const bookingForm = document.getElementById("booking-form");
+
+            if (bookingForm) {
+                bookingForm.addEventListener("submit", async function (e) {
+                    e.preventDefault(); // Prevent default submission
+
+                    const seatsInput = document.getElementById("selected_seats");
+                    const seats = seatsInput.value;
+                    console.log("Submitting form. Selected seats:", seats);
+
+                    if (!seats) {
+                        alert("⚠️ Please select at least one seat.");
+                        return;
+                    }
+
+                    const formData = new FormData(bookingForm);
+
+                    try {
+                        const response = await fetch(bookingForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            modal.style.display = "none"; // Close booking modal
+                            document.getElementById("successMessage").textContent = data.message;
+                            successModal.style.display = "flex"; // Show success modal
+                        } else if (data.error_type === 'insufficient_funds') {
+                            modal.style.display = "none"; // Close booking modal
+                            document.getElementById("insufficientFundsMessage").textContent = data.message;
+                            insufficientFundsModal.style.display = "flex"; // Show error modal
+                        } else {
+                            alert(data.message); // Show error message
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert("An error occurred. Please try again.");
+                    }
+                });
+            }
+
+            // Deposit Form Logic
+            const depositForm = document.getElementById('depositForm');
+            if (depositForm) {
+                depositForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(depositForm);
+                    try {
+                        const response = await fetch(depositForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert(data.message);
+                            depositModal.style.display = "none";
+                            depositForm.reset();
+                            // Optionally reload or update UI if balance is shown somewhere
+                        } else {
+                            alert(data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert("An error occurred. Please try again.");
+                    }
+                });
+            }
+
+            const seats = document.querySelectorAll(".seat");
+            seats.forEach(seat => {
+                seat.addEventListener("click", () => {
+                    if (seat.classList.contains("unavailable")) return;
+                    seat.classList.toggle("selected");
+
+                    const selected = [...document.querySelectorAll(".seat.selected")]
+                        .map(s => s.dataset.seat);
+
+                    console.log("Seat clicked. Current selection:", selected);
+                    document.getElementById("selected_seats").value = selected.join(",");
+                });
+            });
+
+            window.updateSeatAvailability = async function () {
+                const date = document.getElementById("date").value;
+                const time = document.getElementById("time").value;
+
+                if (!date || !time) return;
+
+                try {
+                    const response = await fetch(`/api/booked-seats/{{ movie_name|urlencode }}/?date=${date}&time=${time}`);
+                    const data = await response.json();
+                    const booked = data.booked_seats;
+
+                    seats.forEach(seat => {
+                        const id = seat.dataset.seat;
+                        seat.classList.remove("unavailable", "selected");
+                        seat.disabled = false;
+
+                        if (booked.includes(id)) {
+                            seat.classList.add("unavailable");
+                            seat.disabled = true;
+                        }
+                    });
+
+                    document.getElementById("selected_seats").value = "";
+                } catch (error) {
+                    console.error("Error fetching booked seats:", error);
+                }
+            };
+
+            // prevent past dates
+            const dateInput = document.getElementById("date");
+            if (dateInput) {
+                const now = new Date();
+                dateInput.min = now.toISOString().split("T")[0];
+
+                // Add event listeners for availability check
+                dateInput.addEventListener('change', window.updateSeatAvailability);
+                document.getElementById("time").addEventListener('change', window.updateSeatAvailability);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

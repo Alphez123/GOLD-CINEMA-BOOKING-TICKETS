@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gold Cinema — Admin</title>
+
+    <!-- MAIN ADMIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+</head>
+<body>
+
+<div class="admin-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+        <div class="brand">🎬 Gold Cinema</div>
+
+        <nav>
+            <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+            <a href="{% url 'admin_users' %}">Users</a>
+            <a href="{% url 'admin_bookings' %}">Bookings</a>
+            <a href="{% url 'admin_movies' %}">Movies</a>
+            <a href="{% url 'admin:index' %}">Django Admin</a>
+            <a href="{% url 'logout' %}" style="color:#ff5555;">Logout</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN PAGE CONTENT -->
+    <main class="admin-main">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</div>
+
+</body>
+</html>

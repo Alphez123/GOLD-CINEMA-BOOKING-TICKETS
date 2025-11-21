@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+</head>
+
+<body>
+<div class="admin-container">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="brand">Gold Cinema — Admin</div>
+
+        <nav>
+            <a href="{% url 'admin_dashboard' %}">Overview</a>
+            <a href="{% url 'admin_users' %}" class="active">Users</a>
+            <a href="{% url 'admin_bookings' %}">Bookings</a>
+            <a href="{% url 'admin_movies' %}">Movies</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+        <h1>User Details</h1>
+
+        <!-- Back button -->
+        <a href="{% url 'admin_users' %}" 
+           class="btn-new" 
+           style="margin-bottom:25px; display:inline-block;">
+            ← Back to Users
+        </a>
+
+        <!-- User Profile Card -->
+        <div class="card-row">
+            <div class="card" style="width:350px;">
+                <h3>User Information</h3>
+                <p><strong>Email:</strong> {{ user_obj.email }}</p>
+                <p><strong>Name:</strong> {{ user_obj.first_name }} {{ user_obj.last_name }}</p>
+                <p><strong>City:</strong> {{ user_obj.city }}</p>
+                <p><strong>Phone:</strong> {{ user_obj.phone }}</p>
+                <p><strong>Joined:</strong> {{ user_obj.date_joined }}</p>
+
+                {% if not user_obj.is_superuser %}
+                    <a href="{% url 'delete_user_admin' user_obj.id %}" 
+                       class="btn-delete"
+                       onclick="return confirm('Delete this user?');"
+                       style="display:block; margin-top:18px;">
+                       Delete User
+                    </a>
+                {% else %}
+                    <p style="color:#ffcc00; margin-top:18px;">Superuser — Protected</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Booking History -->
+        <h2 style="margin-top:35px;">Booking History</h2>
+
+        <div class="panel">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Movie</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Seats</th>
+                        <th>Booked On</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for b in bookings %}
+                    <tr>
+                        <td>{{ b.id }}</td>
+                        <td>{{ b.movie_name }}</td>
+                        <td>{{ b.date }}</td>
+                        <td>{{ b.time }}</td>
+                        <td>{{ b.seats }}</td>
+                        <td>{{ b.created_at }}</td>
+                        <td>
+                            <a href="{% url 'delete_booking_admin' b.id %}"
+                               class="btn-delete"
+                               onclick="return confirm('Delete this booking?');">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="muted" style="text-align:center;">
+                            No bookings found for this user.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

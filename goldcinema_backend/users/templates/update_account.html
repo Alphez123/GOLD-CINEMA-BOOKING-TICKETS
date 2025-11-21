@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Account - Gold Cinema</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+</head>
+<body>
+
+  <div class="glass-card">
+    <h2>Edit Profile</h2>
+
+    <form action="" method="POST" id="editProfileForm">
+      {% csrf_token %}
+
+      <div class="input-group">
+        <label>First Name</label>
+        <input type="text" name="first_name" value="{{ user.first_name }}" required>
+      </div>
+
+      <div class="input-group">
+        <label>Last Name</label>
+        <input type="text" name="last_name" value="{{ user.last_name }}" required>
+      </div>
+
+      <div class="input-group">
+        <label>City</label>
+        <input type="text" name="city" value="{{ user.city }}">
+      </div>
+
+      <div class="input-group">
+        <label>Address</label>
+        <input type="text" name="address" value="{{ user.address }}">
+      </div>
+
+      <div class="input-group">
+        <label>ZIP Code</label>
+        <input type="text" name="zip_code" value="{{ user.zip_code }}">
+      </div>
+
+      <div class="input-group">
+        <label>Phone </label>
+        <input type="text" name="phone" id="phone" value="{{ user.phone }}" pattern="07[0-9]{8}" maxlength="10" placeholder="07XXXXXXXX" required>
+        
+      </div>
+
+      <button class="btn" type="submit">Save Changes</button>
+    </form>
+
+    <a href="{% url 'account' %}" class="back-btn">
+      ← Back to My Account
+    </a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const phoneInput = document.getElementById('phone');
+      const form = document.getElementById('editProfileForm');
+
+      // Only allow numbers and enforce 07 prefix
+      phoneInput.addEventListener('input', function(e) {
+        // Remove any non-digit characters
+        let value = e.target.value.replace(/\D/g, '');
+        
+        // Ensure it starts with 07
+        if (!value.startsWith('07')) {
+          value = '07' + value.replace(/^07/, '').replace(/^0/, '');
+        }
+        
+        // Limit to 10 digits
+        if (value.length > 10) {
+          value = value.substring(0, 10);
+        }
+        
+        e.target.value = value;
+      });
+
+      // Prevent non-numeric input
+      phoneInput.addEventListener('keydown', function(e) {
+        // Allow: backspace, delete, tab, escape, enter
+        if ([46, 8, 9, 27, 13].includes(e.keyCode) ||
+            // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+            (e.keyCode === 65 && e.ctrlKey === true) ||
+            (e.keyCode === 67 && e.ctrlKey === true) ||
+            (e.keyCode === 86 && e.ctrlKey === true) ||
+            (e.keyCode === 88 && e.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+          return;
+        }
+        
+        // Ensure it's a number
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+          e.preventDefault();
+        }
+      });
+
+      // Validate phone number on form submission
+      form.addEventListener('submit', function(e) {
+        const phoneValue = phoneInput.value.trim();
+        
+        // Check if phone starts with 07 and is exactly 10 digits
+        if (phoneValue && (!phoneValue.startsWith('07') || phoneValue.length !== 10)) {
+          e.preventDefault();
+          alert('❌ Phone number must start with "07" and be exactly 10 digits long.');
+          phoneInput.focus();
+          return false;
+        }
+        
+        // Check if it contains only numbers
+        if (phoneValue && !/^07\d{8}$/.test(phoneValue)) {
+          e.preventDefault();
+          alert('❌ Phone number can only contain numbers after "07".');
+          phoneInput.focus();
+          return false;
+        }
+        
+        return true;
+      });
+
+      // Add paste event handler to clean pasted content
+      phoneInput.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const numbersOnly = pastedText.replace(/\D/g, '');
+        
+        let value = numbersOnly;
+        if (!value.startsWith('07')) {
+          value = '07' + value.replace(/^07/, '').replace(/^0/, '');
+        }
+        
+        if (value.length > 10) {
+          value = value.substring(0, 10);
+        }
+        
+        phoneInput.value = value;
+      });
+    });
+  </script>
+
+</body>
+</html>

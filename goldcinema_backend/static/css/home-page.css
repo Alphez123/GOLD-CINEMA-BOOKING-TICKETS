@@ -1,0 +1,978 @@
+/* 🌐 BASE STYLES */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  background-image:
+    linear-gradient(to right, rgba(15, 12, 41, 0.8), rgba(36, 36, 62, 0.8)),
+    url("/static/images/cinema.jpg");
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  color: #fff;
+  overflow-x: hidden;
+  position: relative;
+  padding-bottom: 80px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 🧭 NAVBAR */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 6%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo::before {
+  content: "🎬";
+  font-size: 1.2em;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2em;
+}
+
+nav ul li a {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 8px 15px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0);
+}
+
+nav ul li a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* 🎥 HERO SECTION */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  padding: 0 1em;
+}
+
+.hero h1 {
+  font-size: 4em;
+  margin-bottom: 0.2em;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  animation: fadeInDown 1s ease-out;
+}
+
+.hero p {
+  font-size: 1.4em;
+  max-width: 700px;
+  margin-bottom: 2.5em;
+  color: #e0e0e0;
+  line-height: 1.6;
+  animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🟢 BUTTON STYLES */
+.button {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  font-weight: bold;
+  padding: 1em 2.5em;
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(5px);
+  text-transform: uppercase;
+  font-size: 1.1em;
+  letter-spacing: 2px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.button:hover {
+  background: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  transform: translateY(-3px);
+  color: #fff;
+  border-color: #fff;
+}
+
+/* SECTIONS */
+section {
+  padding: 6em 10%;
+  background: none;
+  z-index: 2;
+  position: relative;
+}
+
+section h2 {
+  text-align: center;
+  font-size: 3em;
+  color: #fff;
+  margin-bottom: 1.5em;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  position: relative;
+  padding-bottom: 15px;
+}
+
+section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  border-radius: 2px;
+}
+
+/* 🎞 MOVIE GRID */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3em;
+}
+
+.movie {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+}
+
+.movie:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.movie a {
+  display: block;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+}
+
+.movie img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.movie:hover img {
+  transform: scale(1.1);
+}
+
+.movie-info {
+  padding: 20px;
+}
+
+.movie-info h3 {
+  color: #fff;
+  margin: 0.5em 0;
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+.movie-info p {
+  color: #aaa;
+  margin-bottom: 0.5em;
+  font-size: 0.95em;
+}
+
+/* SIDEBAR & MENU */
+.menu-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.menu-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100%;
+  background: rgba(15, 12, 41, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 30px;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9998;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar h2 {
+  margin-bottom: 40px;
+  font-size: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+  text-align: center;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.menubtn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-weight: 500;
+  padding: 1em 1.5em;
+  margin: 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menubtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+  z-index: 999;
+  backdrop-filter: blur(8px);
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* NOTIFICATIONS */
+.notification-float {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.float-icon-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.float-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  padding: 4px 8px;
+  border-radius: 50%;
+  background: #ff4d4d;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+  display: none;
+}
+
+.badge.show {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 15px);
+  background: rgba(30, 30, 40, 0.95);
+  min-width: 350px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-height: 400px;
+  overflow-y: auto;
+  backdrop-filter: blur(20px);
+}
+
+.dropdown-content.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.dropdown-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  color: #ffd700;
+  font-size: 1em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.notification-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+
+.notification-item-content:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.notification-item-content.unread {
+  background: rgba(255, 215, 0, 0.05);
+  border-left: 3px solid #ffd700;
+}
+
+.archive-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #aaa;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-size-adjust: 100%;
+}
+
+/* 🛑 MODAL STYLES */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: rgba(20, 20, 30, 0.95);
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  color: #fff;
+  animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #ffd700;
+}
+
+/* ACCOUNT MODAL SPECIFIC */
+.account-info {
+  margin-bottom: 20px;
+}
+
+.account-field {
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 10px;
+}
+
+.account-field label {
+  display: block;
+  color: #aaa;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.account-field span {
+  font-size: 1.1em;
+  color: #fff;
+}
+
+.account-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  transition: background 0.3s;
+  display: flex;
+  right: 20px;
+  z-index: 9999;
+}
+
+.chat-tab-btn {
+  background: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  color: #ffd700;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.chat-tab-btn:hover {
+  background: rgba(255, 215, 0, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+/* 💬 CHAT WINDOW */
+.chat-window {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  height: 450px;
+  background: rgba(20, 20, 30, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: none;
+  flex-direction: column;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.chat-window.visible {
+  display: flex;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.chat-header {
+  background: rgba(255, 215, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1.1em;
+  color: #ffd700;
+}
+
+.chat-header button {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.chat-header button:hover {
+  color: #ffd700;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message {
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 80%;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.bot-message {
+  background: rgba(255, 255, 255, 0.1);
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+
+.user-message {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-footer {
+  padding: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 10px;
+}
+
+.chat-footer input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 20px;
+  color: #fff;
+  outline: none;
+}
+
+.chat-footer button {
+  background: #ffd700;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #000;
+  display: flex;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #ffd700;
+}
+
+/* ACCOUNT MODAL SPECIFIC */
+.account-info {
+  margin-bottom: 20px;
+}
+
+.account-field {
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 10px;
+}
+
+.account-field label {
+  display: block;
+  color: #aaa;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.account-field span {
+  font-size: 1.1em;
+  color: #fff;
+}
+
+.account-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  transition: background 0.3s;
+  display: flex;
+  right: 20px;
+  z-index: 9999;
+}
+
+.chat-tab-btn {
+  background: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  color: #ffd700;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.chat-tab-btn:hover {
+  background: rgba(255, 215, 0, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+/* 💬 CHAT WINDOW */
+.chat-window {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  height: 450px;
+  background: rgba(20, 20, 30, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: none;
+  flex-direction: column;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.chat-window.visible {
+  display: flex;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.chat-header {
+  background: rgba(255, 215, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1.1em;
+  color: #ffd700;
+}
+
+.chat-header button {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.chat-header button:hover {
+  color: #ffd700;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message {
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 80%;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.bot-message {
+  background: rgba(255, 255, 255, 0.1);
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+
+.user-message {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-footer {
+  padding: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 10px;
+}
+
+.chat-footer input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 20px;
+  color: #fff;
+  outline: none;
+}
+
+.chat-footer button {
+  background: #ffd700;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.chat-footer button:hover {
+  transform: scale(1.1);
+}
+
+/* FORM STYLING */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #aaa;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 15px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1em;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: rgba(255, 215, 0, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.form-group input::placeholder {
+  color: #666;
+}
+
+/* DELETE MODAL SPECIFIC */
+.delete-modal {
+  border-color: rgba(255, 77, 77, 0.3) !important;
+}
+
+.delete-btn {
+  background: rgba(255, 77, 77, 0.1) !important;
+  color: #ff4d4d !important;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+.delete-btn:hover {
+  background: rgba(255, 77, 77, 0.2) !important;
+  color: #ff6b6b !important;
+  border-color: rgba(255, 77, 77, 0.5);
+}
+
+.delete-modal {
+  border-color: rgba(255, 77, 77, 0.3) !important;
+}
+
+.delete-btn {
+  background: rgba(255, 77, 77, 0.1) !important;
+  color: #ff4d4d !important;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+.delete-btn:hover {
+  background: rgba(255, 77, 77, 0.2) !important;
+  color: #ff6b6b !important;
+  border-color: rgba(255, 77, 77, 0.5);
+}

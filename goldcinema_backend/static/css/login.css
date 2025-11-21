@@ -1,0 +1,375 @@
+/* ============================================================
+   AUTH PAGES (Login & Register) + Chatbot Styles
+   ============================================================ */
+
+/* ------------------------------ */
+/* GLOBAL STYLES */
+/* ------------------------------ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+  background: radial-gradient(circle at center, #3a00b5 0%, #1a004d 100%);
+  background:radial-gradient(circle at center, #4b00d1 0%, #1a0065 100%);
+  background-image: 
+    linear-gradient(to right, rgba(0, 49, 183, 0.6), transparent),
+    url("/static/images/cinema.jpg");
+
+ /* path to your image */
+  background-size: cover;       /* makes the image fill the screen */
+  background-repeat: no-repeat; /* prevents tiling */
+  background-position: center;  /* centers the image */
+  background-attachment: fixed;
+}
+
+/* ------------------------------ */
+/* MAIN CONTAINER */
+/* ------------------------------ */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+/* ------------------------------ */
+/* FORM BOXES (Login / Register) - GLASSMORPHISM */
+/* ------------------------------ */
+.login-box,
+.register-box {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: #dc1616;
+  padding: 40px 50px;
+  border-radius: 15px;
+  margin: 20px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(122, 51, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+  z-index: 2;
+}
+
+/* Optional: Add a subtle gradient overlay for better glass effect */
+.login-box::before,
+.register-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 15px;
+  z-index: -1;
+}
+
+.login-box h2,
+.register-box h2 {
+  color: #fff;
+  text-align: center;
+  margin: 0 0 30px;
+  font-size: 2em;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.back-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9em;
+  margin-bottom: 20px;
+  display: inline-block;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.back-link:hover {
+  color: #a36fff;
+}
+
+/* ------------------------------ */
+/* FORM ELEMENTS */
+/* ------------------------------ */
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-input {
+    width: 100%;
+    padding-right: 35px;
+    box-sizing: border-box;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 15px;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #fff;
+  text-align: left;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 12px;
+  margin-top: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  transition: all 0.3s;
+  outline: none;
+  color: #fff;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus {
+  border-color: rgba(122, 51, 255, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(122, 51, 255, 0.4);
+}
+
+/* ------------------------------ */
+/* BUTTON STYLES */
+/* ------------------------------ */
+button[type="submit"],
+.button {
+  background: linear-gradient(45deg, #7a33ff, #3a00b5);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 100%;
+  margin: 40px 0 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(122, 51, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"]:hover,
+.button:hover {
+  background: linear-gradient(45deg, #a36fff, #3a00b5);
+  box-shadow: 0 0 25px rgba(122, 51, 255, 1);
+  transform: translateY(-2px);
+}
+
+/* ------------------------------ */
+/* CTA / LINKS */
+/* ------------------------------ */
+.cta {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9em;
+  margin-top: 10px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.cta a {
+  color: #a36fff;
+  font-weight: 600;
+  text-decoration: underline;
+  margin-left: 5px;
+  transition: color 0.2s;
+}
+
+.cta a:hover {
+  color: #ff3399;
+}
+
+/* ------------------------------ */
+/* RESPONSIVE DESIGN */
+/* ------------------------------ */
+@media (min-width: 600px) {
+  .login-box,
+  .register-box {
+    width: auto;
+  }
+}
+
+@media (min-width: 900px) {
+  .container {
+    flex-direction: row;
+  }
+}
+
+/* ------------------------------ */
+/* CHATBOT STYLES */
+/* ------------------------------ */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1500;
+}
+
+.chat-tab-btn {
+  background: #ff007f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, background 0.3s;
+}
+
+.chat-tab-btn:hover {
+  background: #ff3399;
+  transform: scale(1.1);
+}
+
+.chat-window {
+  display: none;
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 300px;
+  height: 400px;
+  background: rgba(26, 0, 77, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-window.visible {
+  display: flex !important;
+}
+
+.chat-header {
+  background: rgba(58, 0, 181, 0.8);
+  color: #fff;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.chat-header button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.chat-body {
+  flex-grow: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background-color: rgba(11, 1, 43, 0.8);
+}
+
+.chat-message {
+  padding: 8px 12px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  max-width: 80%;
+  line-height: 1.4;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.bot-message {
+  background: rgba(58, 0, 181, 0.7);
+  color: #fff;
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
+}
+
+.user-message {
+  background: rgba(255, 0, 127, 0.7);
+  color: #fff;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-footer {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid rgba(122, 51, 255, 0.5);
+  background: rgba(26, 0, 77, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+#chatInput {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid rgba(122, 51, 255, 0.5);
+  border-radius: 20px;
+  margin-right: 8px;
+  background: rgba(11, 1, 43, 0.6);
+  color: #fff;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+#chatInput::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+#chatSendBtn {
+  background: #ff007f;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#chatSendBtn:hover {
+  background: #ff3399;
+}

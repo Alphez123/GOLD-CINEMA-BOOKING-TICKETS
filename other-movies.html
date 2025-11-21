@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Ticket - Gold Cinema</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='files/css/other-movies.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="notification-float">
+    <button id="persistentNotificationBtn" class="float-icon-btn" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <span id="notificationCount" class="badge-float" style="display: none;">0</span>
+    </button>
+    
+    <div id="notificationDropdown" class="dropdown-content">
+        <p class="dropdown-header">Notifications</p>
+        <div id="notificationList">
+            <p class="empty-message">Loading notifications...</p>
+        </div>
+    </div>
+
+    <div id="instantBookingWindow" class="instant-window">
+        <p>Booking Confirmed! 🎉</p>
+        <span id="instantBookingDetails"></span>
+    </div>
+</div>
+
+  <canvas id="background"></canvas>
+  
+  <div class="container">
+    <div class="booking-box">
+      <a href="{{ url_for('home_page') }}" class="back-link">← Back to Home</a>
+      <h2>Book Your Experience</h2>
+
+      <form id="bookingForm" action="{{ url_for('create_booking') }}" method="POST">
+        <!-- Select production type -->
+        <label for="type">Choose Type</label>
+        <select id="type" name="type" required>
+          <option value="">Select</option>
+          <option value="movie">Movie</option>
+          <option value="play">Play</option>
+          <option value="concert">Concert</option>
+        </select>
+
+        <!-- Select title -->
+        <label for="title">Choose Title</label>
+        <select id="title" name="title" required>
+          <option value="">Select Title</option>
+          <option value="black-panther">Black Panther</option>
+          <option value="the-lion-king">The Lion King</option>
+          <option value="avengers">Avengers</option>
+          <option value="barbie">Barbie</option>
+        </select>
+
+        <!-- Date and Time -->
+        <label for="date">Choose Date</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time">Choose Time</label>
+        <select id="time" name="time" required>
+          <option value="">Select Time</option>
+          <option value="10:00 AM">10:00 AM</option>
+          <option value="1:00 PM">1:00 PM</option>
+          <option value="4:00 PM">4:00 PM</option>
+          <option value="7:00 PM">7:00 PM</option>
+        </select>
+
+        <!-- Seat selection -->
+        <label>Select Your Seat</label>
+        <div class="seat-map">
+          <div class="seat-row">
+            <button type="button" class="seat">A1</button>
+            <button type="button" class="seat">A2</button>
+            <button type="button" class="seat">A3</button>
+            <button type="button" class="seat">A4</button>
+          </div>
+          <div class="seat-row">
+            <button type="button" class="seat">B1</button>
+            <button type="button" class="seat">B2</button>
+            <button type="button" class="seat">B3</button>
+            <button type="button" class="seat">B4</button>
+          </div>
+        </div>
+
+        <input type="hidden" id="selectedSeats" name="selected_seats">
+
+        <!-- Confirm button -->
+        <button type="submit" class="book-btn">Confirm Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    //{% if not session.get('email') %}
+      //  window.location.href = "{{ url_for('login') }}";
+    //{% endif %}
+
+    function getNotifications() {
+        const storedNotifications = localStorage.getItem('userNotifications');
+        return storedNotifications ? JSON.parse(storedNotifications) : [];
+    }
+
+    function saveNotifications(notifications) {
+        localStorage.setItem('userNotifications', JSON.stringify(notifications));
+    }
+
+    function markNotificationAsRead(index) {
+        const notifications = getNotifications();
+        if (notifications[index]) {
+            notifications[index].read = true;
+            saveNotifications(notifications);
+            renderNotifications(); 
+        }
+    }
+
+    function renderNotifications() {
+        const notifications = getNotifications();
+        const listElement = document.getElementById('notificationList');
+        const countElement = document.getElementById('notificationCount');
+        
+        listElement.innerHTML = '';
+        let unreadCount = 0;
+        
+        if (notifications.length === 0) {
+            listElement.innerHTML = '<p class="empty-message">No notifications.</p>';
+        }
+        
+        notifications.forEach((notification, index) => {
+            const item = document.createElement('div');
+            item.className = notification.read ? 'notification-item-content read' : 'notification-item-content unread';
+            item.dataset.index = index;
+            
+            if (!notification.read) {
+                unreadCount++;
+            }
+            
+            item.innerHTML = `<span class="notification-text">${notification.message}</span>`;
+            
+            const actionButton = document.createElement('button');
+            actionButton.className = 'archive-btn';
+            actionButton.textContent = notification.read ? 'READ' : 'Mark Read';
+            
+            if (notification.read) {
+                 actionButton.disabled = true;
+                 actionButton.classList.add('disabled');
+            }
+            
+            actionButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                markNotificationAsRead(index);
+            });
+            
+            item.appendChild(actionButton);
+            listElement.appendChild(item);
+        });
+        
+        countElement.textContent = unreadCount;
+        countElement.style.display = unreadCount > 0 ? 'block' : 'none';
+    }
+
+    // Main Document Logic
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. Initialize Notifications
+        renderNotifications();
+
+        // 2. Floating Notification Button Handler
+        const persistentBtn = document.getElementById("persistentNotificationBtn");
+        const notificationDropdown = document.getElementById('notificationDropdown');
+
+        persistentBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            notificationDropdown.classList.toggle('show');
+        });
+
+        // 3. Close dropdown if clicking outside
+        window.addEventListener('click', (event) => {
+            if (!event.target.closest('.notification-float') && notificationDropdown.classList.contains('show')) {
+                notificationDropdown.classList.remove('show');
+            }
+        });
+
+        // Seat selection toggle
+        const seats = document.querySelectorAll(".seat");
+        const selectedSeatsInput = document.getElementById("selectedSeats");
+        let selectedSeats = [];
+
+        seats.forEach(seat => {
+            seat.addEventListener("click", () => {
+                seat.classList.toggle("selected");
+                const seatId = seat.textContent;
+                if (selectedSeats.includes(seatId)) {
+                    selectedSeats = selectedSeats.filter(s => s !== seatId);
+                } else {
+                    selectedSeats.push(seatId);
+                }
+                selectedSeatsInput.value = selectedSeats.join(", ");
+            });
+        });
+
+        // Handle booking confirmation
+        document.getElementById("bookingForm").addEventListener("submit", function (e) {
+            const type = document.getElementById("type").value;
+            const title = document.getElementById("title").value;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+
+            if (selectedSeats.length === 0) {
+                e.preventDefault();
+                alert("Please select at least one seat!");
+                return;
+            }
+
+            const titleElement = document.getElementById("title");
+            const titleText = titleElement.options[titleElement.selectedIndex].text;
+
+            // Store booking in localStorage
+            const newBooking = {
+                movie: titleText,
+                type: type,
+                date: date,
+                time: time,
+                seats: selectedSeats.join(", "),
+                bookingId: Date.now()
+            };
+            
+            let bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+            bookings.unshift(newBooking);
+            localStorage.setItem('userBookings', JSON.stringify(bookings));
+
+            // Create notification
+            const notificationMessage = `🎟️ UPCOMING: ${titleText} (${type}) on ${date} at ${time}. Seats: ${selectedSeats.join(", ")}.`;
+            let notifications = getNotifications();
+            notifications.unshift({ 
+                message: notificationMessage, 
+                read: false, 
+                date: new Date().toISOString() 
+            });
+            saveNotifications(notifications);
+
+            // Show instant confirmation
+            const instantWindow = document.getElementById('instantBookingWindow');
+            const instantDetails = document.getElementById('instantBookingDetails');
+            instantDetails.textContent = `${titleText}, Date: ${date}, Seats: ${selectedSeats.join(", ")}`;
+            instantWindow.style.display = 'block';
+
+            // Form will submit to Flask backend
+        });
+
+        // Prevent past dates
+        const dateInput = document.getElementById('date');
+        const today = new Date();
+        dateInput.min = today.toISOString().split('T')[0];
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatTab = document.getElementById('chatTab');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        
+        const toggleChatWindow = () => {
+            chatWindow.classList.toggle('visible');
+            if (chatWindow.classList.contains('visible')) {
+                chatInput.focus();
+            }
+        };
+
+        chatTab.addEventListener('click', toggleChatWindow);
+        closeChatBtn.addEventListener('click', toggleChatWindow);
+
+        const handleUserInput = () => {
+            const userText = chatInput.value.trim();
+            if (userText === '') return;
+
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user-message';
+            userMessageDiv.textContent = userText;
+            chatBody.appendChild(userMessageDiv);
+
+            chatInput.value = '';
+
+            setTimeout(() => {
+                const botResponse = "We have received your complaint and help is underway. Contact 0712345678 for more info.";
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'chat-message bot-message';
+                botMessageDiv.textContent = botResponse;
+                chatBody.appendChild(botMessageDiv);
+                
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 500);
+            
+            chatBody.scrollTop = chatBody.scrollHeight;
+        };
+
+        chatSendBtn.addEventListener('click', handleUserInput);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleUserInput();
+            }
+        });
+    });
+</script>
+
+<div class="chatbot-container">
+    <button id="chatTab" class="chat-tab-btn" title="Advisor Support">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+    
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header">
+            <h3>Advisor Support</h3>
+            <button id="closeChatBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-message bot-message">
+                How may I help you?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" placeholder="Type a message..." />
+            <button id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

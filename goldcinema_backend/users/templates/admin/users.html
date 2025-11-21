@@ -1,0 +1,51 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+
+<h1>Manage Users</h1>
+
+<form method="get" class="search-bar">
+    <input type="text" name="q" value="{{ search_query }}" placeholder="Search users...">
+    <button>Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>City</th>
+            <th>Phone</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.id }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.first_name }} {{ u.last_name }}</td>
+            <td>{{ u.city }}</td>
+            <td>{{ u.phone }}</td>
+            <td>
+                <a href="{% url 'admin_user_detail' u.id %}" class="btn-view">View</a>
+
+                {% if not u.is_superuser %}
+                <a href="{% url 'delete_user_admin' u.id %}"
+                   class="btn-delete"
+                   onclick="return confirm('Delete this user?');">
+                    Delete
+                </a>
+                {% else %}
+                <span class="badge">Protected</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No users found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

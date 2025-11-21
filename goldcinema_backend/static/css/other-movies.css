@@ -1,0 +1,654 @@
+/* ============================================================
+   BOOKING PAGE STYLES
+   Optimized, standardized, and consistently formatted
+   ============================================================ */
+
+/* ------------------------------ */
+/* 🌐 GENERAL STYLES */
+/* ------------------------------ */
+html, body {
+  margin: 0;
+  background:radial-gradient(circle at center, #4b00d1 0%, #1a0065 100%);
+  background-image: 
+    linear-gradient(to right, rgba(0, 49, 183, 0.6), transparent),
+    url('/Goldmine/static/images/cinema.jpg');
+ /* path to your image */
+  background-size: cover;       /* makes the image fill the screen */
+  background-repeat: no-repeat; /* prevents tiling */
+  background-position: center;  /* centers the image */
+  background-attachment: fixed;
+  padding: 0;
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+  overflow-y: auto; /* Enables scrolling */
+}
+
+/* Background */
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200vh;
+  background: radial-gradient(circle at center, #4b00d1 0%, #1a0065 100%);
+  z-index: -1;
+}
+
+/* Container */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+}
+
+/* ------------------------------ */
+/* 🎟 BOOKING BOX */
+/* ------------------------------ */
+.booking-box {
+  background: #fff;
+  color: #000;
+  width: 350px;
+  padding: 30px 40px;
+  border-radius: 15px;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.booking-box h1,
+.booking-box h2 {
+  margin-bottom: 20px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #000000;
+  font-weight: 600;
+  text-decoration: none;
+  transition: text-decoration 0.3s;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------ */
+/* 🧾 FORM ELEMENTS */
+/* ------------------------------ */
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #000000;
+  text-align: left;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: #f0f0f0;
+  color: #070505;
+}
+
+/* ------------------------------ */
+/* 💺 SEAT MAP */
+/* ------------------------------ */
+.seat-map {
+  margin: 15px 0;
+}
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.seat {
+  padding: 8px 12px;
+  margin: 3px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background: radial-gradient(circle at center, #4b00d1 0%, #1a0065 100%);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.seat:hover {
+  background: #fff;
+  color: #000;
+}
+
+.seat.selected {
+  background: #fff;
+  color: #080808;
+}
+
+/* ------------------------------ */
+/* 🔘 BUTTONS */
+/* ------------------------------ */
+.book-btn {
+  width: 100%;
+  background: radial-gradient(circle at center, #4b00d1 0%, #1a0065 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.book-btn:hover {
+  background: #4b00d1;
+  box-shadow: 0 0 15px rgba(75, 0, 209, 0.5);
+}
+
+.button {
+  width: 100%;
+  background: linear-gradient(45deg, #7a33ff, #3a00b5);
+  color: #fff;
+  font-weight: bold;
+  padding: 0.9em 1.8em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+  text-transform: uppercase;
+  font-size: 1em;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 15px rgba(122, 51, 255, 0.6);
+}
+
+.button:hover {
+  background: linear-gradient(45deg, #a36fff, #3a00b5);
+  box-shadow: 0 0 25px rgba(122, 51, 255, 1);
+  transform: scale(1.05);
+}
+
+/* ------------------------------ */
+/* 🔔 FLOATING NOTIFICATION ICON */
+/* ------------------------------ */
+.notification-float {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.float-icon-btn {
+  background: rgba(122, 51, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  width: 45px;
+  height: 45px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s, background 0.3s;
+}
+
+.float-icon-btn:hover {
+  background: #7a33ff;
+  transform: scale(1.05);
+}
+
+/* Notification Badge */
+.badge-float {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  padding: 3px 6px;
+  border-radius: 50%;
+  background-color: #ff4d4d;
+  color: #fff;
+  font-size: 0.7em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* ------------------------------ */
+/* ⚡ INSTANT CONFIRMATION WINDOW */
+/* ------------------------------ */
+.instant-window {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 60px;
+  min-width: 250px;
+  padding: 10px 15px;
+  background: rgba(25, 0, 80, 0.95);
+  color: #fff;
+  border-radius: 6px;
+  border: 1px solid #c9a6ff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.instant-window p {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #c9a6ff;
+}
+
+/* ------------------------------ */
+/* 📩 NOTIFICATION DROPDOWN */
+/* ------------------------------ */
+.notification-float .dropdown-content {
+  position: absolute;
+  top: 50px;
+  left: -10px;
+  min-width: 350px;
+  max-height: 400px;
+  background-color: #1a004d;
+  border: 1px solid #7a33ff;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  display: none;
+  z-index: 1001;
+}
+
+.notification-float .dropdown-content.show {
+  display: block;
+}
+
+.dropdown-header {
+  padding: 10px 15px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #ff007f;
+  border-bottom: 2px solid #3a00b5;
+}
+
+.empty-message {
+  padding: 10px 15px;
+  color: #aaa;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Notification Items */
+.notification-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(122, 51, 255, 0.2);
+  color: #f0f0f0;
+  font-size: 0.9em;
+  transition: background-color 0.2s;
+}
+
+.notification-item-content.unread {
+  background-color: rgba(122, 51, 255, 0.1);
+  font-weight: 600;
+}
+
+.notification-text {
+  flex-grow: 1;
+  margin-right: 10px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.archive-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: #3a00b5;
+  color: #c9a6ff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.archive-btn:hover:not(:disabled) {
+  background: #5b00e5;
+}
+
+.archive-btn.disabled {
+  background: #250080;
+  color: #7a33ff;
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ------------------------------ */
+/* 🤖 CHATBOT WIDGET */
+/* ------------------------------ */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1500; /* Always on top */
+}
+
+/* Floating Tab Button */
+.chat-tab-btn {
+  background: #ff007f;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  width: 55px;
+  height: 55px;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, background 0.3s;
+}
+
+.chat-tab-btn:hover {
+  background: #ff3399;
+  transform: scale(1.1);
+}
+
+/* Chat Window */
+.chat-window {
+  display: none;
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 300px;
+  height: 400px;
+  background: #1a004d;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.chat-window.visible {
+  display: flex !important;
+}
+
+/* Chat Header */
+.chat-header {
+  background: #7a33ff;
+  color: #fff;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Chat Body */
+.chat-body {
+  flex-grow: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background-color: #0b012b;
+}
+
+.chat-message {
+  padding: 8px 12px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  max-width: 80%;
+}
+
+.bot-message {
+  background-color: #3a00b5;
+  color: #fff;
+  margin-right: auto;
+}
+
+.user-message {
+  background-color: #ff007f;
+  color: #fff;
+  margin-left: auto;
+}
+
+/* Chat Footer */
+.chat-footer {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #7a33ff;
+  background-color: #1a004d;
+}
+
+#chatInput {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #7a33ff;
+  border-radius: 20px;
+  margin-right: 8px;
+  background-color: #0b012b;
+  color: #fff;
+}
+
+#chatSendBtn {
+  background: #ff007f;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+/* 📱 MOBILE OPTIMIZATION FOR BOOKING PAGE */
+@media (max-width: 768px) {
+  /* General mobile adjustments */
+  body {
+    font-size: 14px;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  /* Container adjustments */
+  .container {
+    padding: 20px 0;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+  
+  /* Booking box - make it smaller and responsive */
+  .booking-box {
+    width: 90%;
+    max-width: 320px;
+    padding: 20px 25px;
+    margin: 20px auto;
+  }
+  
+  /* Headings scaling */
+  .booking-box h1 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  
+  .booking-box h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+  }
+  
+  /* Form elements scaling */
+  label {
+    font-size: 0.9em;
+    margin-top: 8px;
+  }
+  
+  input, select {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+  
+  /* Seat map scaling */
+  .seat-map {
+    margin: 10px 0;
+  }
+  
+  .seat-row {
+    margin-bottom: 3px;
+  }
+  
+  .seat {
+    padding: 6px 10px;
+    margin: 2px;
+    font-size: 0.8em;
+    min-width: 30px;
+  }
+  
+  /* Buttons scaling */
+  .book-btn {
+    padding: 12px;
+    font-size: 0.9em;
+  }
+  
+  .button {
+    padding: 12px;
+    font-size: 0.9em;
+    margin-top: 15px;
+  }
+  
+  /* Back link */
+  .back-link {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+  
+  /* Notification button - hide on mobile */
+  .notification-float {
+    display: none;
+  }
+  
+  /* Chatbot adjustments */
+  .chatbot-container {
+    bottom: 15px;
+    right: 15px;
+  }
+  
+  .chat-tab-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3em;
+  }
+  
+  .chat-window {
+    width: 280px;
+    height: 380px;
+    bottom: 65px;
+  }
+  
+  .chat-header {
+    padding: 8px 12px;
+  }
+  
+  .chat-header h3 {
+    font-size: 1em;
+  }
+  
+  .chat-body {
+    padding: 12px;
+  }
+  
+  .chat-message {
+    padding: 6px 10px;
+    font-size: 0.9em;
+  }
+  
+  .chat-footer {
+    padding: 8px;
+  }
+  
+  #chatInput {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+  
+  #chatSendBtn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  /* Background adjustments */
+  #background {
+    height: 150vh;
+  }
+}
+
+/* Extra small devices (phones) */
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+  
+  .booking-box {
+    width: 95%;
+    padding: 15px 20px;
+    margin: 15px auto;
+  }
+  
+  .booking-box h1 {
+    font-size: 1.3em;
+  }
+  
+  .booking-box h2 {
+    font-size: 1.1em;
+  }
+  
+  .seat {
+    padding: 5px 8px;
+    font-size: 0.75em;
+    min-width: 25px;
+  }
+  
+  .button, .book-btn {
+    padding: 10px;
+    font-size: 0.85em;
+  }
+  
+  .chat-window {
+    width: 260px;
+    height: 350px;
+  }
+  
+  .container {
+    padding: 15px 0;
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 768px) {
+  .seat, .button, .book-btn {
+    min-height: 44px; /* Minimum touch target size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  input, select {
+    min-height: 44px; /* Better touch targets */
+  }
+}
+.seat.unavailable {
+    background: #555 !important;
+    color: #ccc !important;
+    cursor: not-allowed;
+}

@@ -1,0 +1,276 @@
+/* --------------------------------------------------
+   GLOBAL FONT & RESET
+-------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background: #0e0f11;
+    color: #f1f1f1;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --------------------------------------------------
+   LAYOUT
+-------------------------------------------------- */
+.admin-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* --------------------------------------------------
+   SIDEBAR
+-------------------------------------------------- */
+.admin-sidebar {
+    width: 270px;
+    background: #121418;
+    padding: 25px;
+    border-right: 1px solid #1d1f24;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-sidebar .brand {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #ffcc00;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.admin-sidebar nav a {
+    display: block;
+    color: #c5c5c5;
+    text-decoration: none;
+    padding: 12px 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    transition: .25s;
+}
+
+.admin-sidebar nav a:hover {
+    color: #ffffff;
+    padding-left: 6px;
+}
+
+.admin-sidebar nav a.active {
+    color: #ffcc00;
+    font-weight: 600;
+}
+
+/* --------------------------------------------------
+   MAIN CONTENT
+-------------------------------------------------- */
+.admin-main {
+    flex: 1;
+    padding: 30px;
+    overflow-y: scroll;
+}
+
+.admin-main h1 {
+    font-size: 32px;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+/* --------------------------------------------------
+   CARDS
+-------------------------------------------------- */
+.card-row {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 25px;
+    border-radius: 14px;
+    width: 240px;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: .35s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: #ffcc00;
+}
+
+.card h3 {
+    color: #c9c9c9;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* --------------------------------------------------
+   TABLES
+-------------------------------------------------- */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table thead {
+    background: #1a1c21;
+}
+
+.table thead th {
+    padding: 14px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #dddddd;
+    text-transform: uppercase;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #2b2d33;
+    transition: 0.25s;
+}
+
+.table tbody tr:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+.table td {
+    padding: 14px;
+    font-size: 15px;
+}
+
+/* --------------------------------------------------
+   BUTTONS
+-------------------------------------------------- */
+.btn-view {
+    color: #00b7ff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .25s;
+}
+
+.btn-view:hover {
+    color: #33cfff;
+}
+
+.btn-delete {
+    color: #ff4444;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.btn-delete:hover {
+    color: #ff7777;
+}
+
+.btn-new {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #ffcc00;
+    color: #000;
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: .25s;
+}
+
+.btn-new:hover {
+    background: #ffe46b;
+}
+
+/* --------------------------------------------------
+   SEARCH BAR
+-------------------------------------------------- */
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    padding: 9px 15px;
+    width: 260px;
+    border-radius: 8px;
+    border: none;
+    background: #1a1c21;
+    color: #ffffff;
+}
+
+.search-bar button {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: none;
+    margin-left: 10px;
+    background: #ffcc00;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* --------------------------------------------------
+   FORMS (MOVIE ADD/EDIT)
+-------------------------------------------------- */
+.form-box {
+    background: rgba(255,255,255,0.04);
+    padding: 25px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    width: 550px;
+}
+
+.form-box label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.form-box input,
+.form-box select,
+.form-box textarea {
+    width: 100%;
+    padding: 10px;
+    background: #1c1e23;
+    border: 1px solid #2b2d33;
+    border-radius: 8px;
+    color: #ffffff;
+    margin-bottom: 18px;
+}
+
+.btn-save {
+    width: 100%;
+    padding: 12px;
+    background: #ffcc00;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background: #ffd84d;
+}
+
+/* --------------------------------------------------
+   DELETE CONFIRMATION
+-------------------------------------------------- */
+.btn-cancel {
+    padding: 10px 18px;
+    background: #333;
+    border-radius: 8px;
+    margin-left: 10px;
+    color: #fff;
+    text-decoration: none;
+}
+
