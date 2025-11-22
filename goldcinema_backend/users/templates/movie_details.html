@@ -288,329 +288,245 @@
 
             to {
                 opacity: 1;
-            }
-        }
-    </style>
-</head>
 
-<body>
+                <label for="time">Time</label><select id="time" name="time" required><option value="" disabled selected>Select Time</option><option value="10:00">10: 00 AM</option> <option value="13:00" >01:00 PM</option> <option value="16:00" >04:00 PM</option> <option value="19:00" >07:00 PM</option> <option value="22:00" >10:00 PM</option> </select> <div class="seat-map" > <label>Select Seats</label> <div class="seat-row" > <div class="seat" data-seat="A1" >A1</div> <div class="seat" data-seat="A2" >A2</div> <div class="seat" data-seat="A3" >A3</div> <div class="seat" data-seat="A4" >A4</div> </div> <div class="seat-row" > <div class="seat" data-seat="B1" >B1</div> <div class="seat" data-seat="B2" >B2</div> <div class="seat" data-seat="B3" >B3</div> <div class="seat" data-seat="B4" >B4</div> </div> <div class="seat-row" > <div class="seat" data-seat="C1" >C1</div> <div class="seat" data-seat="C2" >C2</div> <div class="seat" data-seat="C3" >C3</div> <div class="seat" data-seat="C4" >C4</div> </div> </div> <input type="hidden" id="selected_seats" name="selected_seats" > <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;" >Confirm Booking</button> </form> </div> </div> < !-- Success Modal --> <div id="successModal" class="modal" > <div class="modal-content" style="text-align: center;" > <div style="font-size: 50px; color: #4caf50; margin-bottom: 20px;" > <i class="fas fa-check-circle" ></i> </div> <h2 style="color: #4caf50;" >Booking Confirmed !</h2> <p id="successMessage" style="font-size: 1.1em; color: #e0e0e0; margin-bottom: 30px;" ></p> <button id="closeSuccessBtn" class="btn btn-primary" style="width: 100%;" >Awesome !</button> </div> </div> < !-- Insufficient Funds Modal --> <div id="insufficientFundsModal" class="modal" > <div class="modal-content" style="text-align: center;" > <div style="font-size: 50px; color: #ff4d4d; margin-bottom: 20px;" > <i class="fas fa-exclamation-circle" ></i> </div> <h2 style="color: #ff4d4d;" >Insufficient Funds</h2> <p id="insufficientFundsMessage" style="font-size: 1.1em; color: #e0e0e0; margin-bottom: 30px;" ></p> <button id="openDepositFromErrorBtn" class="btn btn-primary" style="width: 100%;" >Deposit Funds</button> <button id="closeInsufficientFundsBtn" class="btn btn-secondary"
+                    style="width: 100%; margin-top: 10px;" >Cancel</button> </div> </div> < !-- Deposit Modal --> <div id="depositModal" class="modal" > <div class="modal-content" style="max-width: 400px; text-align: center;" > <span class="close-btn" id="closeDepositModal" >&times;
 
-    <div class="container">
-        <div class="movie-poster">
-            {% if movie_poster %}
-            <img src="{{ movie_poster }}" alt="{{ movie_name }}">
-            {% else %}
-            <img src="{% static 'images/other-movies.jpg' %}" alt="{{ movie_name }}">
-            {% endif %}
-        </div>
-        <div class="movie-info">
-            <h1>{{ movie_name }}</h1>
-            <div class="meta-tags">
-                <span class="tag">{{ movie_genre|default:"Genre" }}</span>
-                <span class="tag">{{ movie_duration|default:"Duration" }}</span>
-            </div>
-            <p>{{ movie_description }}</p>
+                </span><h2 style="color: #4caf50;">Deposit Funds</h2><form id="depositForm" method="POST" action="{% url 'deposit' %}"> {
+                    % csrf_token %
+                }
 
-            <div class="btn-group">
-                <button id="openBookingModal" class="btn btn-primary">Book Ticket</button>
-                <a href="{% url 'homepage' %}" class="btn btn-secondary">Back to Home</a>
-            </div>
-        </div>
-    </div>
+                <label for="amount" style="text-align: left; color: #ffd700;">Amount (KSH)</label><input type="number" id="amount" name="amount" min="1" required style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc;"><button type="submit" class="btn btn-primary"
+                style="width: 100%; background: #4caf50; border: none;">Deposit Now</button></form></div></div><script>const modal=document.getElementById("bookingModal");
+                const btn=document.getElementById("openBookingModal");
+                const span=document.getElementsByClassName("close-btn")[0];
+                const successModal=document.getElementById("successModal");
+                const closeSuccessBtn=document.getElementById("closeSuccessBtn");
 
-    <!-- Booking Modal -->
-    <div id="bookingModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Book Ticket</h2>
-            <form id="booking-form" method="POST" action="{% url 'create_booking' %}">
-                {% csrf_token %}
-                <input type="hidden" name="movie_name" value="{{ movie_name }}">
+                // Insufficient Funds Elements
+                const insufficientFundsModal=document.getElementById("insufficientFundsModal");
+                const openDepositFromErrorBtn=document.getElementById("openDepositFromErrorBtn");
+                const closeInsufficientFundsBtn=document.getElementById("closeInsufficientFundsBtn");
 
-                <label for="date">Date</label>
-                <input type="date" id="date" name="date" required>
+                // Deposit Elements
+                const depositModal=document.getElementById("depositModal");
+                const closeDepositBtn=document.getElementById("closeDepositModal");
 
-                <label for="time">Time</label>
-                <select id="time" name="time" required>
-                    <option value="" disabled selected>Select Time</option>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="13:00">01:00 PM</option>
-                    <option value="16:00">04:00 PM</option>
-                    <option value="19:00">07:00 PM</option>
-                    <option value="22:00">10:00 PM</option>
-                </select>
+                if (btn) {
+                    btn.onclick=function () {
+                        modal.style.display="flex";
+                    }
+                }
 
-                <div class="seat-map">
-                    <label>Select Seats</label>
-                    <div class="seat-row">
-                        <div class="seat" data-seat="A1">A1</div>
-                        <div class="seat" data-seat="A2">A2</div>
-                        <div class="seat" data-seat="A3">A3</div>
-                        <div class="seat" data-seat="A4">A4</div>
-                    </div>
-                    <div class="seat-row">
-                        <div class="seat" data-seat="B1">B1</div>
-                        <div class="seat" data-seat="B2">B2</div>
-                        <div class="seat" data-seat="B3">B3</div>
-                        <div class="seat" data-seat="B4">B4</div>
-                    </div>
-                    <div class="seat-row">
-                        <div class="seat" data-seat="C1">C1</div>
-                        <div class="seat" data-seat="C2">C2</div>
-                        <div class="seat" data-seat="C3">C3</div>
-                        <div class="seat" data-seat="C4">C4</div>
-                    </div>
-                </div>
+                if (span) {
+                    span.onclick=function () {
+                        modal.style.display="none";
+                    }
+                }
 
-                <input type="hidden" id="selected_seats" name="selected_seats">
+                if (closeSuccessBtn) {
+                    closeSuccessBtn.onclick=function () {
+                        successModal.style.display="none";
+                        window.location.href="{% url 'homepage' %}";
+                    }
+                }
 
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Confirm
-                    Booking</button>
-            </form>
-        </div>
-    </div>
+                // Insufficient Funds Logic
+                if (openDepositFromErrorBtn) {
+                    openDepositFromErrorBtn.onclick=function () {
+                        insufficientFundsModal.style.display="none";
+                        depositModal.style.display="flex";
+                    }
+                }
 
-    <!-- Success Modal -->
-    <div id="successModal" class="modal">
-        <div class="modal-content" style="text-align: center;">
-            <div style="font-size: 50px; color: #4caf50; margin-bottom: 20px;">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2 style="color: #4caf50;">Booking Confirmed!</h2>
-            <p id="successMessage" style="font-size: 1.1em; color: #e0e0e0; margin-bottom: 30px;"></p>
-            <button id="closeSuccessBtn" class="btn btn-primary" style="width: 100%;">Awesome!</button>
-        </div>
-    </div>
+                if (closeInsufficientFundsBtn) {
+                    closeInsufficientFundsBtn.onclick=function () {
+                        insufficientFundsModal.style.display="none";
+                    }
+                }
 
-    <!-- Insufficient Funds Modal -->
-    <div id="insufficientFundsModal" class="modal">
-        <div class="modal-content" style="text-align: center;">
-            <div style="font-size: 50px; color: #ff4d4d; margin-bottom: 20px;">
-                <i class="fas fa-exclamation-circle"></i>
-            </div>
-            <h2 style="color: #ff4d4d;">Insufficient Funds</h2>
-            <p id="insufficientFundsMessage" style="font-size: 1.1em; color: #e0e0e0; margin-bottom: 30px;"></p>
-            <button id="openDepositFromErrorBtn" class="btn btn-primary" style="width: 100%;">Deposit Funds</button>
-            <button id="closeInsufficientFundsBtn" class="btn btn-secondary"
-                style="width: 100%; margin-top: 10px;">Cancel</button>
-        </div>
-    </div>
+                // Deposit Modal Logic
+                if (closeDepositBtn) {
+                    closeDepositBtn.onclick=function () {
+                        depositModal.style.display="none";
+                    }
+                }
 
-    <!-- Deposit Modal -->
-    <div id="depositModal" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <span class="close-btn" id="closeDepositModal">&times;</span>
-            <h2 style="color: #4caf50;">Deposit Funds</h2>
-            <form id="depositForm" method="POST" action="{% url 'deposit' %}">
-                {% csrf_token %}
-                <label for="amount" style="text-align: left; color: #ffd700;">Amount (KSH)</label>
-                <input type="number" id="amount" name="amount" min="1" required
-                    style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc;">
-                <button type="submit" class="btn btn-primary"
-                    style="width: 100%; background: #4caf50; border: none;">Deposit Now</button>
-            </form>
-        </div>
-    </div>
+                window.onclick=function (event) {
+                    if (event.target==modal) modal.style.display="none";
 
-    <script>
-        const modal = document.getElementById("bookingModal");
-        const btn = document.getElementById("openBookingModal");
-        const span = document.getElementsByClassName("close-btn")[0];
-        const successModal = document.getElementById("successModal");
-        const closeSuccessBtn = document.getElementById("closeSuccessBtn");
-
-        // Insufficient Funds Elements
-        const insufficientFundsModal = document.getElementById("insufficientFundsModal");
-        const openDepositFromErrorBtn = document.getElementById("openDepositFromErrorBtn");
-        const closeInsufficientFundsBtn = document.getElementById("closeInsufficientFundsBtn");
-
-        // Deposit Elements
-        const depositModal = document.getElementById("depositModal");
-        const closeDepositBtn = document.getElementById("closeDepositModal");
-
-        if (btn) {
-            btn.onclick = function () {
-                modal.style.display = "flex";
-            }
-        }
-
-        if (span) {
-            span.onclick = function () {
-                modal.style.display = "none";
-            }
-        }
-
-        if (closeSuccessBtn) {
-            closeSuccessBtn.onclick = function () {
-                successModal.style.display = "none";
-                window.location.href = "{% url 'homepage' %}";
-            }
-        }
-
-        // Insufficient Funds Logic
-        if (openDepositFromErrorBtn) {
-            openDepositFromErrorBtn.onclick = function () {
-                insufficientFundsModal.style.display = "none";
-                depositModal.style.display = "flex";
-            }
-        }
-
-        if (closeInsufficientFundsBtn) {
-            closeInsufficientFundsBtn.onclick = function () {
-                insufficientFundsModal.style.display = "none";
-            }
-        }
-
-        // Deposit Modal Logic
-        if (closeDepositBtn) {
-            closeDepositBtn.onclick = function () {
-                depositModal.style.display = "none";
-            }
-        }
-
-        window.onclick = function (event) {
-            if (event.target == modal) modal.style.display = "none";
-            if (event.target == successModal) {
-                successModal.style.display = "none";
-                window.location.href = "{% url 'homepage' %}";
-            }
-            if (event.target == insufficientFundsModal) insufficientFundsModal.style.display = "none";
-            if (event.target == depositModal) depositModal.style.display = "none";
-        }
-
-        // Booking Logic
-        document.addEventListener("DOMContentLoaded", () => {
-            const bookingForm = document.getElementById("booking-form");
-
-            if (bookingForm) {
-                bookingForm.addEventListener("submit", async function (e) {
-                    e.preventDefault(); // Prevent default submission
-
-                    const seatsInput = document.getElementById("selected_seats");
-                    const seats = seatsInput.value;
-                    console.log("Submitting form. Selected seats:", seats);
-
-                    if (!seats) {
-                        alert("⚠️ Please select at least one seat.");
-                        return;
+                    if (event.target==successModal) {
+                        successModal.style.display="none";
+                        window.location.href="{% url 'homepage' %}";
                     }
 
-                    const formData = new FormData(bookingForm);
+                    if (event.target==insufficientFundsModal) insufficientFundsModal.style.display="none";
+                    if (event.target==depositModal) depositModal.style.display="none";
+                }
 
-                    try {
-                        const response = await fetch(bookingForm.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
+                // Booking Logic
+                document.addEventListener("DOMContentLoaded", ()=> {
+                        const bookingForm=document.getElementById("booking-form");
+
+                        if (bookingForm) {
+                            bookingForm.addEventListener("submit", async function (e) {
+                                    e.preventDefault(); // Prevent default submission
+
+                                    const seatsInput=document.getElementById("selected_seats");
+                                    const seats=seatsInput.value;
+                                    console.log("Submitting form. Selected seats:", seats);
+
+                                    if ( !seats) {
+                                        alert("⚠️ Please select at least one seat.");
+                                        return;
+                                    }
+
+                                    const formData=new FormData(bookingForm);
+
+                                    try {
+                                        const response=await fetch(bookingForm.action, {
+
+                                            method: 'POST',
+                                            body: formData,
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            }
+                                        });
+
+                                    const data=await response.json();
+
+                                    if (data.success) {
+                                        modal.style.display="none"; // Close booking modal
+                                        document.getElementById("successMessage").textContent=data.message;
+                                        successModal.style.display="flex"; // Show success modal
+                                    }
+
+                                    else if (data.error_type==='insufficient_funds') {
+                                        modal.style.display="none"; // Close booking modal
+                                        document.getElementById("insufficientFundsMessage").textContent=data.message;
+                                        insufficientFundsModal.style.display="flex"; // Show error modal
+                                    }
+
+                                    else {
+                                        alert(data.message); // Show error message
+                                    }
+                                }
+
+                                catch (error) {
+                                    console.error('Error:', error);
+                                    alert("An error occurred. Please try again.");
+                                }
+                            });
+                    }
+
+                    // Deposit Form Logic
+                    const depositForm=document.getElementById('depositForm');
+
+                    if (depositForm) {
+                        depositForm.addEventListener('submit', async (e)=> {
+                                e.preventDefault();
+                                const formData=new FormData(depositForm);
+
+                                try {
+                                    const response=await fetch(depositForm.action, {
+
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-Requested-With': 'XMLHttpRequest'
+                                        }
+                                    });
+                                const data=await response.json();
+
+                                if (data.success) {
+                                    alert(data.message);
+                                    depositModal.style.display="none";
+                                    depositForm.reset();
+                                    // Optionally reload or update UI if balance is shown somewhere
+                                }
+
+                                else {
+                                    alert(data.message);
+                                }
+                            }
+
+                            catch (error) {
+                                console.error('Error:', error);
+                                alert("An error occurred. Please try again.");
                             }
                         });
+                }
 
-                        const data = await response.json();
+                const seats=document.querySelectorAll(".seat");
 
-                        if (data.success) {
-                            modal.style.display = "none"; // Close booking modal
-                            document.getElementById("successMessage").textContent = data.message;
-                            successModal.style.display = "flex"; // Show success modal
-                        } else if (data.error_type === 'insufficient_funds') {
-                            modal.style.display = "none"; // Close booking modal
-                            document.getElementById("insufficientFundsMessage").textContent = data.message;
-                            insufficientFundsModal.style.display = "flex"; // Show error modal
-                        } else {
-                            alert(data.message); // Show error message
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert("An error occurred. Please try again.");
-                    }
-                });
-            }
+                seats.forEach(seat=> {
+                        seat.addEventListener("click", ()=> {
+                                if (seat.classList.contains("unavailable")) return;
+                                seat.classList.toggle("selected");
 
-            // Deposit Form Logic
-            const depositForm = document.getElementById('depositForm');
-            if (depositForm) {
-                depositForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(depositForm);
-                    try {
-                        const response = await fetch(depositForm.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        });
-                        const data = await response.json();
-                        if (data.success) {
-                            alert(data.message);
-                            depositModal.style.display = "none";
-                            depositForm.reset();
-                            // Optionally reload or update UI if balance is shown somewhere
-                        } else {
-                            alert(data.message);
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert("An error occurred. Please try again.");
-                    }
-                });
-            }
+                                const selected=[...document.querySelectorAll(".seat.selected")] .map(s=> s.dataset.seat);
 
-            const seats = document.querySelectorAll(".seat");
-            seats.forEach(seat => {
-                seat.addEventListener("click", () => {
-                    if (seat.classList.contains("unavailable")) return;
-                    seat.classList.toggle("selected");
-
-                    const selected = [...document.querySelectorAll(".seat.selected")]
-                        .map(s => s.dataset.seat);
-
-                    console.log("Seat clicked. Current selection:", selected);
-                    document.getElementById("selected_seats").value = selected.join(",");
-                });
-            });
-
-            window.updateSeatAvailability = async function () {
-                const date = document.getElementById("date").value;
-                const time = document.getElementById("time").value;
-
-                if (!date || !time) return;
-
-                try {
-                    const response = await fetch(`/api/booked-seats/{{ movie_name|urlencode }}/?date=${date}&time=${time}`);
-                    const data = await response.json();
-                    const booked = data.booked_seats;
-
-                    seats.forEach(seat => {
-                        const id = seat.dataset.seat;
-                        seat.classList.remove("unavailable", "selected");
-                        seat.disabled = false;
-
-                        if (booked.includes(id)) {
-                            seat.classList.add("unavailable");
-                            seat.disabled = true;
-                        }
+                                console.log("Seat clicked. Current selection:", selected);
+                                document.getElementById("selected_seats").value=selected.join(",");
+                            });
                     });
 
-                    document.getElementById("selected_seats").value = "";
-                } catch (error) {
-                    console.error("Error fetching booked seats:", error);
+                window.updateSeatAvailability=async function () {
+                    const date=document.getElementById("date").value;
+                    const time=document.getElementById("time").value;
+
+                    if ( !date || !time) return;
+
+                    try {
+                        const response=await fetch(`/api/booked-seats/ {
+                                    {
+                                    movie_name|urlencode
+                                }
+                            }
+
+                            /?date=$ {
+                                date
+                            }
+
+                            &time=$ {
+                                time
+                            }
+
+                            `);
+                        const data=await response.json();
+                        const booked=data.booked_seats;
+
+                        seats.forEach(seat=> {
+                                const id=seat.dataset.seat;
+                                seat.classList.remove("unavailable", "selected");
+                                seat.disabled=false;
+
+                                if (booked.includes(id)) {
+                                    seat.classList.add("unavailable");
+                                    seat.disabled=true;
+                                }
+                            });
+
+                        document.getElementById("selected_seats").value="";
+                    }
+
+                    catch (error) {
+                        console.error("Error fetching booked seats:", error);
+                    }
                 }
-            };
 
-            // prevent past dates
-            const dateInput = document.getElementById("date");
-            if (dateInput) {
-                const now = new Date();
-                dateInput.min = now.toISOString().split("T")[0];
+                ;
 
-                // Add event listeners for availability check
-                dateInput.addEventListener('change', window.updateSeatAvailability);
-                document.getElementById("time").addEventListener('change', window.updateSeatAvailability);
-            }
-        });
-    </script>
+                // prevent past dates
+                const dateInput=document.getElementById("date");
 
-</body>
+                if (dateInput) {
+                    const now=new Date();
+                    dateInput.min=now.toISOString().split("T")[0];
 
-</html>
+                    // Add event listeners for availability check
+                    dateInput.addEventListener('change', window.updateSeatAvailability);
+                    document.getElementById("time").addEventListener('change', window.updateSeatAvailability);
+                }
+            });
+        </script></body></html>
